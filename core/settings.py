@@ -1,0 +1,9 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+AWS_DYNAMODB_REGION = os.getenv("AWS_DYNAMODB_REGION")
+AWS_DYNAMODB_ACCESS_KEY_ID = os.getenv("AWS_DYNAMODB_ACCESS_KEY_ID")
+AWS_DYNAMODB_ACCESS_KEY = os.getenv("AWS_DYNAMODB_ACCESS_KEY")
+AWS_DYNAMODB_TABLE_NAME = os.getenv("AWS_DYNAMODB_TABLE_NAME")
