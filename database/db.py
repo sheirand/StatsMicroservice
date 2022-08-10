@@ -1,12 +1,17 @@
 import boto3
+import botocore.exceptions
+import logging
 from core import settings
+
+
+logger = logging.getLogger(__name__)
 
 dynamodb = boto3.resource(
     'dynamodb',
-    region_name="us-west-2",
+    region_name=settings.AWS_DYNAMODB_REGION,
     aws_access_key_id=settings.AWS_DYNAMODB_ACCESS_KEY_ID,
     aws_secret_access_key=settings.AWS_DYNAMODB_ACCESS_KEY,
-    endpoint_url='http://localhost:8001'
+    endpoint_url=settings.AWS_DYNAMODB_ENDPOINT
 )
 
 
@@ -47,6 +52,8 @@ def create_tables():
                 AttributeDefinitions=table["AttributeDefinitions"],
                 BillingMode="PAY_PER_REQUEST"
             )
-    except Exception as e:
-        print(e)
-
+    except botocore.exceptions.ClientError as e:
+        if e.response["Error"]["Code"] == "ResourceInUseException":
+            logger.info("db is ready to use!")
+        else:
+            logger.warning(e)
