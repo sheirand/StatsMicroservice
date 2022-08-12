@@ -22,4 +22,3 @@ def get_page(user_id: str, page_id: str):
         return response["Items"]
     except ClientError as e:
         return JSONResponse(content=e.response["Error"], status_code=500)
-
