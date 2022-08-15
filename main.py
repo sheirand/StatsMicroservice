@@ -1,8 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import asyncio
 from core.consumer import PikaClient
 from core.urls import router
 from database.db import create_tables
+from database.crud import CRUDManager
 
 
 class Statistic(FastAPI):
@@ -12,7 +13,16 @@ class Statistic(FastAPI):
 
     @classmethod
     def handle_incoming_messages(cls, body, method):
-        pass
+        print(method, body, sep="\n")
+        match method:
+            case "page created":
+                CRUDManager.create_page(body)
+            case "add followers" | "remove followers" | "new post" | "like":
+                CRUDManager.update_param(method, body)
+            case "page deleted":
+                CRUDManager.delete_page(body)
+            case _:
+                raise HTTPException(status_code=500)
 
 
 app = Statistic()
