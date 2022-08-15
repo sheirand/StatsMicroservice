@@ -36,7 +36,6 @@ class PikaClient:
                                           login=RABBIT_USER,
                                           password=RABBIT_PW,
                                           loop=loop)
-        print("robust connection")
         channel = await connection.channel()
         queue = await channel.declare_queue(PUBLISH_QUEUE)
         await queue.consume(self.process_incoming_message, no_ack=False)
@@ -47,8 +46,8 @@ class PikaClient:
     async def process_incoming_message(self, message):
         """Processing incoming message from RabbitMQ"""
         await message.ack()
+        method = message.properties.content_type
         body = message.body
-        print("process_incoming messages")
         logger.info('Received message')
         if body:
-            self.process_callable(json.loads(body))
+            self.process_callable(json.loads(body), method)
