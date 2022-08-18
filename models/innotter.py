@@ -8,6 +8,5 @@ class Stats(BaseModel):
 
 
 class Innotter(BaseModel):
-    user_id: str
     page_id: str
     statistic: Stats

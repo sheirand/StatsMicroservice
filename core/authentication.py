@@ -25,13 +25,13 @@ class JWTAuthentication(HTTPBearer):
 
     @staticmethod
     def has_access(credentials):
-        """Function that is used to validate the token in the case that it requires it"""
+        """Checks JWT-owner access"""
 
         token = credentials
 
         try:
             payload = jwt.decode(
-                token, key=JWT_SECRET_KEY, options={"verify_signature": False, "verify_aud": False, "verify_iss": False}
+                token, key=JWT_SECRET_KEY, algorithms=['HS256']
             )
 
             if not JWTAuthentication.check_user_id(str(payload["id"])):

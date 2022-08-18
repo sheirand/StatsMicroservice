@@ -2,7 +2,6 @@ from database.db import dynamodb
 from botocore.exceptions import ClientError
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import HTTPException
-from boto3.dynamodb.conditions import Key
 
 
 class CRUDManager:
@@ -26,12 +25,12 @@ class CRUDManager:
             return JSONResponse(content=e.response["Error"], status_code=500)
 
     @staticmethod
-    def get_stats(user_id: str, page_id: str):
+    def get_stats(user_id: str):
         try:
             response = CRUDManager.__table.query(
-                KeyConditionExpression=Key("page_id").eq(page_id) & Key("user_id").eq(user_id)
+                KeyConditionExpression="user_id = :id",
+                ExpressionAttributeValues={":id": user_id}
             )
-            print(response)
             return response["Items"]
         except ClientError as e:
             return JSONResponse(content=e.response["Error"], status_code=500)
