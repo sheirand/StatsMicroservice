@@ -10,7 +10,7 @@ class CRUDManager:
 
     @staticmethod
     def create_page(body: dict):
-        print(body)
+
         payload = {"page_id": str(body["id"]),
                    "user_id": str(body["user_id"]),
                    "statistic": {
