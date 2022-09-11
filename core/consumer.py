@@ -29,7 +29,6 @@ class PikaClient:
         logger.info('Pika connection initialized')
 
     async def consume(self, loop):
-        print('consume')
         """Setup message listener with the current running loop"""
         connection = await connect_robust(host=RABBIT_CONNECTION,
                                           port=RABBIT_PORT,
