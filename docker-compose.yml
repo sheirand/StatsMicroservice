@@ -8,6 +8,8 @@ services:
       - "8001:8001"
     depends_on:
       - dynamodb-local
+    networks:
+      - rabbitmq
   dynamodb-local:
     command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data -port 8003"
     image: "amazon/dynamodb-local:latest"
@@ -21,3 +23,8 @@ services:
     working_dir: /home/dynamodblocal
     env_file:
       - .env
+    networks:
+      - rabbitmq
+networks:
+  rabbitmq:
+    external: true
